@@ -22,11 +22,11 @@ function App() {
           <Route exact path="/home" component={MainScr}/> 
           : <Route exact path="/login" render={(props) => <Loginfrm {...props} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>} />
                }
-          <Route path="/registration" render={(props) => <Registration {...props} setRegistering={setRegistering}/>}/>
+          <Route path="/registration" render={(props) => <Registration {...props} registering={registering} setRegistering={setRegistering}/>}/>
           loggedIn && <Route path="/logout" render={(props) => <Logout {...props} setLoggedIn={setLoggedIn}/>}/> 
           loggedIn && <Route path="/personaldetails" component={PersonalDetails}/>
           loggedIn && <Route path="/educationaldetails" component={EducationalDetails}/>
-          registering && <Route path="/registration-step2" component={RegistrationPart2}/>
+          registering && <Route path="/registration-step2" render={(props) => <RegistrationPart2 {...props} registering={registering} setRegistering={setRegistering}/>}/>
       </Switch>
     </div>
   );

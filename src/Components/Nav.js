@@ -15,7 +15,8 @@ const Nav = ( {loggedIn,registering} ) => {
                     { loggedIn && <Link style={{textDecoration:'none',color:'white'}} to="/personaldetails"><Button color="inherit">Personal Detail</Button></Link>}
                     {loggedIn && <Link style={{textDecoration:'none',color:'white'}} to="/educationaldetails"><Button color="inherit">Educational Detail</Button></Link>}
                     {loggedIn ? <Link style={{textDecoration:'none',color:'white'}} to="/logout"><Button color="inherit">Logout</Button></Link>
-                    : (!registering && <Link to="/login" style={{textDecoration:'none',color:'white'}}><Button color="inherit">Login</Button></Link>)}
+                    : !registering && <><Link to="/login" style={{textDecoration:'none',color:'white'}}><Button color="inherit">Login</Button></Link><Link to="/registration" style={{textDecoration:'none',color:'white'}}><Button color="inherit">Register</Button></Link></>
+                        }
                 </Toolbar>
             </AppBar>
         

@@ -7,8 +7,8 @@ const RegistrationPart2 = (props) => {
         instituteName:'',
         cgpa:'',
         course:'',
-        startDate:'2016-06-24',
-        endDate:'2021-06-24',
+        startDate:'',
+        endDate:'',
     },]);
 
     const [errorMsgs,setErrorMsgs] = useState([{
@@ -37,7 +37,9 @@ const RegistrationPart2 = (props) => {
             let currUser = JSON.parse(localStorage.getItem("currUser"));
             localStorage.setItem("educational detail"+currUser.email, JSON.stringify(educationDetails));
             props.history.push("/login");
-            alert("Registed Successfully")    
+            alert("Registed Successfully");
+            props.setRegistering(false); 
+            localStorage.removeItem("currUserForRegisterForm");   
         }
         else
         {
@@ -203,7 +205,6 @@ const RegistrationPart2 = (props) => {
                         id={"datestart" + index}
                         label="Start Date"
                         type="date"
-                        defaultValue="2016-06-24"
                         InputLabelProps={{
                         shrink: true,
                         }}
@@ -220,7 +221,6 @@ const RegistrationPart2 = (props) => {
                         id={"dateend" + index}
                         label="End Date"
                         type="date"
-                        defaultValue="2021-06-24"
                         InputLabelProps={{
                         shrink: true,
                         }}

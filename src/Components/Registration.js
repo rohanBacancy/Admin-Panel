@@ -25,9 +25,9 @@ const Registration = (props) => {
     })
 
     useEffect(() => {
-        if(localStorage.getItem("currUser") != null)
+        if(localStorage.getItem("currUserForRegisterForm") != null)
         {
-            let existingItem = JSON.parse(localStorage.getItem("currUser"));
+            let existingItem = JSON.parse(localStorage.getItem("currUserForRegisterForm"));
             setUserDetails({
                 fname:existingItem.fname,
                 lname:existingItem.lname,
@@ -43,30 +43,43 @@ const Registration = (props) => {
     const handleSubmit = (e) => 
     {
         e.preventDefault();
+        //sum variable sums length of all error msgs to see if there are any errors in input?
         let sum=0;
         for(let msg in errorMsgs)
         {
-            if(msg!="isInputErroneous")
+            if(msg!="isInputErroneous")//skips the last flag field
             sum+=errorMsgs[msg].length;
         }
-        if(sum==0)
-        {
-            if(localStorage.getItem("userDetail"+userDetails.email) != null)
-            {
-                alert("User Already Exist , Please Login");
-                props.history.push("/login");
 
-            }
-            else
+        if(sum==0)//No Input Errors
+        {
+            if(props.registering)//Registering Gone to Second Step so Let it Pass without check
             {
-            props.setRegistering(true);
-            localStorage.setItem("userDetail"+userDetails.email,JSON.stringify(userDetails));
-            localStorage.setItem("currUser",JSON.stringify(userDetails));
-            console.log(JSON.parse(localStorage.getItem("userDetail")));
-            props.history.push("/registration-step2");
+                props.setRegistering(true);
+                localStorage.setItem("userDetail"+userDetails.email,JSON.stringify(userDetails));
+                localStorage.setItem("currUser",JSON.stringify(userDetails));
+                props.history.push("/registration-step2");
+                // }
+            }
+            else // registering first time check for unique email
+            {
+                if(localStorage.getItem("userDetail"+userDetails.email) != null)
+                {
+                     alert("User Already Exist , Please Login");
+                     props.history.push("/login");
+                }
+                else
+                {
+                props.setRegistering(true);
+                localStorage.setItem("userDetail"+userDetails.email,JSON.stringify(userDetails));
+                localStorage.setItem("currUser",JSON.stringify(userDetails));
+                localStorage.setItem("currUserForRegisterForm",JSON.stringify(userDetails));
+                console.log(JSON.parse(localStorage.getItem("userDetail")));
+                props.history.push("/registration-step2");
+                }
             }
         }
-        else
+        else//input contains errors
         {
             alert("Input is Erroneous")
         }

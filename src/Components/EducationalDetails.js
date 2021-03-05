@@ -27,7 +27,7 @@ const EducationalDetails = () => {
 
     const handleDeleteClick = (id) =>
     {
-      let ans = window.confirm("sure you want to delete");
+      let ans = window.confirm("Are You Sure?");
       if(ans)
       {
         let newArr = [...educationalDetails];
