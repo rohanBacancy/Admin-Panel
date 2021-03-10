@@ -12,11 +12,100 @@ const EditEducationDtls = ({id,userDetails,setShowForm,setUserDetails,gotObj,ema
         endDate:'',
     });
 
+    const [errorMsgs,setErrorMsgs] = useState({
+        cgpaError:'',
+        phoneError:'',
+        startDateError:'',
+    })
+
     useEffect(()=> {
         console.log("here");
         console.log(gotObj);
         setCurrEduDetail(gotObj)
     },[gotObj]);
+
+    const handleChange = (e) =>
+    {
+        validate(e);
+        switch(e.target.name)
+        {
+            case 'institute':
+                setCurrEduDetail({...currEduDetail,instituteName:e.target.value}) 
+                break;
+            case 'cgpa':
+                setCurrEduDetail({...currEduDetail,cgpa:e.target.value})
+                break;
+            case 'course':
+                setCurrEduDetail({...currEduDetail,course:e.target.value})
+                break;
+            case 'datestart':
+                setCurrEduDetail({...currEduDetail,startDate:e.target.value})
+                break;
+            case 'dateend':
+                setCurrEduDetail({...currEduDetail,endDate:e.target.value})
+                break;
+            default:
+                console.log("How");
+                break;
+        }
+    }
+
+    const validate = (e) =>
+    {
+        switch(e.target.name)
+        {
+            case 'cgpa':
+                checkPercentage(e.target.value);
+                break;
+            case 'datestart':
+                checkStartIsLessThanEnd();
+                break;
+            case 'dateend':
+                checkStartIsLessThanEnd();
+                break;
+            default:
+                console.log("How");
+                break;
+        }
+        
+    }
+
+    const checkPercentage = (str) =>
+    {
+        let x = Number(str);
+        console.log(x);
+        let tempErrorMsgs = {};
+        tempErrorMsgs = {...errorMsgs};
+        if ( isNaN(x)  || Number(x) < 0 || Number(x) > 100) {
+            tempErrorMsgs.cgpaError = "Value must be between 1-100"
+            setErrorMsgs(tempErrorMsgs); 
+            }
+        else { 
+            tempErrorMsgs.cgpaError = ""
+            setErrorMsgs(tempErrorMsgs); 
+         } 
+    }
+
+    const checkStartIsLessThanEnd = () =>
+    {
+        let startdateval = new Date(document.getElementById("datestart").value);
+        let enddateval = new Date(document.getElementById("dateend").value);
+        console.log("inside Check start date is - " + startdateval + "end date" + enddateval);
+        let tempErrorMsgs = {};
+        tempErrorMsgs = {...errorMsgs};
+
+        if(startdateval > enddateval)
+        {
+            console.log("Inside true")
+            tempErrorMsgs.startDateError="Start Date Must be Less Than End Date";
+            setErrorMsgs(tempErrorMsgs); 
+        }
+        else { 
+            console.log("Inside false")
+            tempErrorMsgs.startDateError="";
+            setErrorMsgs(tempErrorMsgs); 
+        }
+    }
 
     const handleCancelClick = () =>
     {
@@ -35,30 +124,7 @@ const EditEducationDtls = ({id,userDetails,setShowForm,setUserDetails,gotObj,ema
      setShowForm(false);
     }
 
-    const handleChange = (e) =>
-    {
-        switch(e.target.name)
-        {
-            case 'institute':
-                setCurrEduDetail({...currEduDetail,instituteName:e.target.value}) 
-                break;
-            case 'cgpa':
-                setCurrEduDetail({...currEduDetail,cgpa:e.target.value})
-                break;
-            case 'course':
-                setCurrEduDetail({...currEduDetail,course:e.target.value})
-                break;
-            case 'startdate':
-                setCurrEduDetail({...currEduDetail,startDate:e.target.value})
-                break;
-            case 'enddate':
-                setCurrEduDetail({...currEduDetail,endDate:e.target.value})
-                break;
-            default:
-                console.log("How");
-                break;
-        }
-    }
+    
 
     return (
       <Card>
@@ -68,6 +134,7 @@ const EditEducationDtls = ({id,userDetails,setShowForm,setUserDetails,gotObj,ema
             <Typography variant="h5" align="center" color="primary" style={{marginBottom:'20px'}}>Enter Educational Details</Typography>
             <Grid container alignItems="center" justify="center" direction="column" spacing={1} style={{maxWidth:'100vw',marginTop:'2px'}}>
                 
+                {/* Institute Name */}
                 <Grid item>
                     <TextField
                        name="institute"
@@ -81,6 +148,8 @@ const EditEducationDtls = ({id,userDetails,setShowForm,setUserDetails,gotObj,ema
                     label="CGPA/Percentage"
                     value={currEduDetail.cgpa}
                         onChange={(e) =>handleChange(e)}
+                        error={errorMsgs.cgpaError.length>1}
+                        helperText={errorMsgs.cgpaError}
                      required style={{width:'25vw'}}></TextField></Grid>
                 {/* Course Name */}
                 <Grid item><TextField
@@ -93,11 +162,14 @@ const EditEducationDtls = ({id,userDetails,setShowForm,setUserDetails,gotObj,ema
                 {/* Start Date */}
                 <Grid item>
                     <TextField
-                        name="startdate"
+                        name="datestart"
+                        id="datestart"
                         label="Start Date"
                         type="date"
                         value={currEduDetail.startDate}
                         onChange={(e) =>handleChange(e)}
+                        error={errorMsgs.startDateError.length>1}
+                        helperText={errorMsgs.startDateError}
                         InputLabelProps={{
                         shrink: true,
                         }}
@@ -108,7 +180,8 @@ const EditEducationDtls = ({id,userDetails,setShowForm,setUserDetails,gotObj,ema
                 {/* End Date */}
                 <Grid item>
                     <TextField
-                        name="enddate"
+                        name="dateend"
+                        id="dateend"
                         label="End Date"
                         type="date"
                         value={currEduDetail.endDate}

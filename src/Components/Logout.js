@@ -3,15 +3,14 @@ import React,{useEffect} from 'react'
 
 const Logout = (props) => {
 
-    useEffect( () => {
-        props.setLoggedIn(false);   
+    useEffect( () => {   
         localStorage.removeItem("currUser");    
-        setTimeout(() => {props.history.replace("/login");},2000)      
+        setTimeout(() => {props.history.replace("/login");props.setLoggedIn(false);},2000)      
     },[])
     
     return (
         <div>
-            <Typography variant={"h3"} align={"center"} style={{marginTop:'40vh'}}>Logging You Out</Typography>
+            <Typography variant={"h3"} align={"center"} style={{marginTop:'40vh'}}>Logging You Out.......</Typography>
         </div>
     )
 }
