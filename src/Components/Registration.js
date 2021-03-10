@@ -1,12 +1,12 @@
 import React, { useState,useEffect } from 'react';
-import { Typography,Grid,Button, Paper, TextField,Select,MenuItem } from '@material-ui/core';
+import { Typography,Grid,Button, Paper, TextField,Select,MenuItem,InputLabel } from '@material-ui/core';
 
 const Registration = (props) => {
 
     const [userDetails,setUserDetails] = useState({
         fname:'',
         lname:'',
-        gender:'',
+        gender:'male',
         email:'',
         phone:'',
         password:'',
@@ -53,8 +53,21 @@ const Registration = (props) => {
 
         if(sum==0)//No Input Errors
         {
+            let usersArr = [];
+            let storeObj = {id:userDetails.email,userInfo:userDetails};
             if(props.registering)//Registering Gone to Second Step so Let it Pass without check
             {
+                if(localStorage.getItem("users"))
+                {
+                    usersArr = JSON.parse(localStorage.getItem("users"));
+                    usersArr.push(storeObj);
+                    localStorage.setItem("users",JSON.stringify(usersArr));
+                }
+                else
+                {
+                    usersArr.push(storeObj);
+                    localStorage.setItem("users",JSON.stringify(usersArr));
+                }
                 props.setRegistering(true);
                 localStorage.setItem("userDetail"+userDetails.email,JSON.stringify(userDetails));
                 localStorage.setItem("currUser",JSON.stringify(userDetails));
@@ -70,6 +83,17 @@ const Registration = (props) => {
                 }
                 else
                 {
+                if(localStorage.getItem("users"))
+                {
+                    usersArr = JSON.parse(localStorage.getItem("users"));
+                    usersArr.push(storeObj);
+                    localStorage.setItem("users",JSON.stringify(usersArr));
+                }
+                else
+                {
+                    usersArr.push(storeObj);
+                    localStorage.setItem("users",JSON.stringify(usersArr));
+                }
                 props.setRegistering(true);
                 localStorage.setItem("userDetail"+userDetails.email,JSON.stringify(userDetails));
                 localStorage.setItem("currUser",JSON.stringify(userDetails));
@@ -176,8 +200,8 @@ const Registration = (props) => {
                     <TextField
                      value={userDetails.fname}
                       onChange={handleChange}   
-                 error={errorMsgs.fnameError}
-                  helperText={errorMsgs.fnameError}
+                        error={errorMsgs.fnameError}
+                        helperText={errorMsgs.fnameError}
                        name="fname"
                         label="First Name"
                          required style={{width:'25vw'}}></TextField></Grid>
@@ -192,9 +216,11 @@ const Registration = (props) => {
                      required style={{width:'25vw'}}></TextField></Grid>
                 {/* Gender */}
                         <Grid item style={{marginTop:'10px',marginBottom:'-4px'}}>
+                        <InputLabel id="genderlbl">Gender</InputLabel>
                         <Select  value={userDetails.gender}
                          onChange={handleChange}
                           name="gender"
+                          labelId="genderlbl"
                  error={errorMsgs.genderError}
                   helperText={errorMsgs.genderError}
                            required style={{width:'25vw'}}>

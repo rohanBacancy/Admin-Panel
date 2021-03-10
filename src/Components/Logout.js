@@ -8,6 +8,7 @@ const Logout = (props) => {
         localStorage.removeItem("currUser");    
         setTimeout(() => {props.history.replace("/login");},2000)      
     },[])
+    
     return (
         <div>
             <Typography variant={"h3"} align={"center"} style={{marginTop:'40vh'}}>Logging You Out</Typography>

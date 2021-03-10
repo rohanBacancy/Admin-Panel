@@ -12,26 +12,38 @@ const Loginfrm = (props) => {
 
     const handleSubmit = (e) => 
     {
+        let flagUserExist = false;
         e.preventDefault();
-        if(localStorage.getItem("userDetail" + email) == null)
+        if(localStorage.getItem("users") == null)
         {
-            alert("User Doesn't Exist , Please Register");
+            alert("No Users in the system");
         }
-        else{
-        let emailMatchUser = JSON.parse(localStorage.getItem("userDetail" + email));
-        
-        
-        //set currUser and UserDetail+email
-        if(email == emailMatchUser.email && pass == emailMatchUser.password)
-        {
-            props.setLoggedIn(true);
-            alert("Successfully LoggedIn");
-            localStorage.setItem("currUser",JSON.stringify(emailMatchUser));
-            props.history.push("/home");
-        }
+
         else
         {
-            alert("Invalid Credentials")
+        let users = JSON.parse(localStorage.getItem("users"));
+        for(let user of users)
+        {
+            console.log(user.id);
+            if(user.id === email)
+            {
+                flagUserExist=true;
+                if(pass === user.userInfo.password)
+                {
+                    alert("Successfully Logged In");
+                    props.setLoggedIn(true);
+                    localStorage.setItem("currUser",JSON.stringify(user.userInfo));
+                    props.history.push("/home");
+                }
+                else
+                {
+                    alert("Invalid Password");
+                }
+            }
+        }
+        if(!flagUserExist)
+        {
+             alert("User doesn't Exist Please Login")
         }
         }
     }

@@ -2,19 +2,21 @@ import React,{useEffect,useState} from 'react'
 import {Paper,Grid,Typography, TextField,Button,Card,CardContent} from '@material-ui/core/';
 
 
-const EditEducationDtls = ({id,educationalDetails,setShowForm,setEducationalDetails}) => {
+const EditEducationDtls = ({id,userDetails,setShowForm,setUserDetails,gotObj,email}) => {
 
     const [currEduDetail,setCurrEduDetail] = useState({
         instituteName:'',
         cgpa:'',
         course:'',
-        startDate:'2016-06-24',
-        endDate:'2021-06-24',
+        startDate:'',
+        endDate:'',
     });
 
     useEffect(()=> {
-        setCurrEduDetail(educationalDetails[id])
-    },[educationalDetails[id]]);
+        console.log("here");
+        console.log(gotObj);
+        setCurrEduDetail(gotObj)
+    },[gotObj]);
 
     const handleCancelClick = () =>
     {
@@ -25,13 +27,12 @@ const EditEducationDtls = ({id,educationalDetails,setShowForm,setEducationalDeta
     const handleSubmit = (e) =>
     {
         e.preventDefault();
-        console.log(currEduDetail);
-        let currUser = JSON.parse(localStorage.getItem("currUser"));
-        let arrayGot = JSON.parse(localStorage.getItem("educational detail"+currUser.email));
-        arrayGot[id] = currEduDetail;
-        setEducationalDetails(arrayGot);
-        localStorage.setItem("educational detail"+currUser.email,JSON.stringify(arrayGot));
-        setShowForm(false);
+        let newEduObj = currEduDetail;
+        console.log("Got Email" + email + "and ID " + id);
+      let userArr = JSON.parse(localStorage.getItem("users"));
+      let newUserArr = userArr.filter((user) => user.id === email ? user.educationDetail[id] = newEduObj : user );
+      localStorage.setItem("users",JSON.stringify(newUserArr));
+     setShowForm(false);
     }
 
     const handleChange = (e) =>
@@ -58,8 +59,6 @@ const EditEducationDtls = ({id,educationalDetails,setShowForm,setEducationalDeta
                 break;
         }
     }
-
-
 
     return (
       <Card>

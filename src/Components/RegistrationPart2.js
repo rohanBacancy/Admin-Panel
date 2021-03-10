@@ -15,7 +15,7 @@ const RegistrationPart2 = (props) => {
         cgpaError:'',
         phoneError:'',
         startDateError:'',
-        isInputErroneous:true,
+        isInputErroneous:true,//if register button disabling is required then this will be usable
     },])
 
     const handleSubmit = (e) =>
@@ -35,6 +35,26 @@ const RegistrationPart2 = (props) => {
         {
             console.log(educationDetails);
             let currUser = JSON.parse(localStorage.getItem("currUser"));
+            let usersArr = [];
+            let storeObj = {id:currUser.email,userInfo:currUser,educationDetail:educationDetails};
+            if(localStorage.getItem("users"))
+            {
+                usersArr = JSON.parse(localStorage.getItem("users"));
+                
+                //Replace Object within Array Of Object
+                //Placing Educational Details of perticular user in the users array
+                let newList = [];
+                usersArr.forEach(function (item)
+                {
+                    if (item.id === currUser.email) {
+                        newList.push(storeObj);
+                    }
+                    else { newList.push(item); }
+                });
+
+            console.log(newList);
+            localStorage.setItem("users",JSON.stringify(newList));
+            }
             localStorage.setItem("educational detail"+currUser.email, JSON.stringify(educationDetails));
             props.history.push("/login");
             alert("Registed Successfully");
