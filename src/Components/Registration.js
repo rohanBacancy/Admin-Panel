@@ -41,6 +41,7 @@ const Registration = (props) => {
 
     const handleSubmit = (e) => 
     {
+        console.log("hsubmit")
         e.preventDefault();
         //sum variable sums length of all error msgs to see if there are any errors in input?
         let sum=0;
@@ -55,25 +56,13 @@ const Registration = (props) => {
             let storeObj = {id:userDetails.email,userInfo:userDetails};
             if(props.registering)//Registering Gone to Second Step so Let it Pass without check
             {
-                if(localStorage.getItem("users")) // If Any users present then get and push in users localstorage array
-                {
-                    usersArr = JSON.parse(localStorage.getItem("users"));
-                    usersArr.push(storeObj);
-                    localStorage.setItem("users",JSON.stringify(usersArr));
-                }
-                else //No users present push first user create users array in localstorage
-                {
-                    usersArr.push(storeObj);
-                    localStorage.setItem("users",JSON.stringify(usersArr));
-                }
-                props.setRegistering(true);
-                localStorage.setItem("userDetail"+userDetails.email,JSON.stringify(userDetails));
                 localStorage.setItem("currUser",JSON.stringify(userDetails));
                 props.history.push("/registration-step2");
                 // }
             }
             else // registering first time check for unique email
             {
+                console.log("Second time here 4")
                 if(localStorage.getItem("userDetail"+userDetails.email) != null)
                 {
                      alert("User Already Exist , Please Login");
@@ -198,7 +187,7 @@ const Registration = (props) => {
                     <TextField
                      value={userDetails.fname}
                       onChange={handleChange}   
-                        error={errorMsgs.fnameError} // if error message isn't null will active error class
+                        error={errorMsgs.fnameError.length>1} // if error message isn't null will active error class
                         helperText={errorMsgs.fnameError} // Show the actual error message below the input if any
                        name="fname"
                         label="First Name"
@@ -207,7 +196,7 @@ const Registration = (props) => {
                 <Grid item><TextField
                  value={userDetails.lname}
                   onChange={handleChange}
-                 error={errorMsgs.lnameError}
+                 error={errorMsgs.lnameError.length>1}
                   helperText={errorMsgs.lnameError}
                    name="lname"
                     label="Last Name"
@@ -219,7 +208,7 @@ const Registration = (props) => {
                          onChange={handleChange}
                           name="gender"
                           labelId="genderlbl"
-                 error={errorMsgs.genderError}
+                 error={errorMsgs.genderError.length>1}
                   helperText={errorMsgs.genderError}
                            required style={{width:'25vw'}}>
                             <MenuItem value={"male"}>Male</MenuItem>
@@ -229,7 +218,7 @@ const Registration = (props) => {
                          </Grid>
                 {/* Email */}
                 <Grid item><TextField
-                 error={errorMsgs.emailError}
+                 error={errorMsgs.emailError.length>1}
                   helperText={errorMsgs.emailError}
                    value={userDetails.email}
                     name="email"
@@ -239,7 +228,7 @@ const Registration = (props) => {
                         required style={{width:'25vw'}}></TextField></Grid>
                 {/* Phone Number */}
                 <Grid item><TextField
-                 error={errorMsgs.phoneError}
+                 error={errorMsgs.phoneError.length>1}
                   helperText={errorMsgs.phoneError}
                    value={userDetails.phone}
                     name="phone"
@@ -248,7 +237,7 @@ const Registration = (props) => {
                        required style={{width:'25vw'}}></TextField></Grid>
                 {/* Password */}
                 <Grid item><TextField
-                 error={errorMsgs.passwordError}
+                 error={errorMsgs.passwordError.length>1}
                   helperText={errorMsgs.passwordError}
                    value={userDetails.password}
                     name="pass" onChange={handleChange}
@@ -257,7 +246,7 @@ const Registration = (props) => {
                        required style={{width:'25vw'}}></TextField></Grid>
                 {/* Confirm Pass */}
                 <Grid item><TextField
-                 error={errorMsgs.confirmPasswordError}
+                 error={errorMsgs.confirmPasswordError.length>1}
                   helperText={errorMsgs.confirmPasswordError}
                    value={userDetails.confirmPassword}
                     name="cpass" onChange={handleChange}

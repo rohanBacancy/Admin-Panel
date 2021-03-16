@@ -202,7 +202,7 @@ const RegistrationPart2 = (props) => {
                 <Grid item><TextField
                  value={eduDetail.cgpa}
                   onChange={(e) =>handleChange(index,e)}
-                  error={errorMsgs[index].cgpaError}
+                  error={errorMsgs[index].cgpaError.length>1}
                   helperText={errorMsgs[index].cgpaError}
                    name="cgpa"
                     label="CGPA/Percentage"
@@ -220,7 +220,7 @@ const RegistrationPart2 = (props) => {
                     <TextField
                         value={eduDetail.startDate}
                         onChange={(e) =>handleChange(index,e)}
-                        error={errorMsgs[index].startDateError}
+                        error={errorMsgs[index].startDateError.length>1}
                         helperText={errorMsgs[index].startDateError}
                         name="startdate"
                         id={"datestart" + index}
