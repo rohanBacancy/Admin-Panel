@@ -3,7 +3,7 @@ import { Typography,Grid,Button, Paper, TextField,Select,MenuItem,InputLabel } f
 
 const Registration = (props) => {
 
-    const [userDetails,setUserDetails] = useState({
+    const [userDetails,setUserDetails] = useState({  //Form Fields value
         fname:'',
         lname:'',
         gender:'male',
@@ -13,19 +13,18 @@ const Registration = (props) => {
         confirmPassword:'',
     });
 
-    const [errorMsgs,setErrorMsgs] = useState({
+    const [errorMsgs,setErrorMsgs] = useState({ //Error Messages for materil UI
         fnameError:'',
         lnameError:'',
         genderError:'',
         emailError:'',
         phoneError:'',
         passwordError:'',
-        confirmPasswordError:'',
-        isInputErroneous:true
+        confirmPasswordError:''
     })
 
     useEffect(() => {
-        if(localStorage.getItem("currUserForRegisterForm") != null)
+        if(localStorage.getItem("currUserForRegisterForm") != null) //If tapped Previous Btn from step2 then set the formFields
         {
             let existingItem = JSON.parse(localStorage.getItem("currUserForRegisterForm"));
             setUserDetails({
@@ -47,7 +46,6 @@ const Registration = (props) => {
         let sum=0;
         for(let msg in errorMsgs)
         {
-            if(msg!="isInputErroneous")//skips the last flag field
             sum+=errorMsgs[msg].length;
         }
 
@@ -57,13 +55,13 @@ const Registration = (props) => {
             let storeObj = {id:userDetails.email,userInfo:userDetails};
             if(props.registering)//Registering Gone to Second Step so Let it Pass without check
             {
-                if(localStorage.getItem("users"))
+                if(localStorage.getItem("users")) // If Any users present then get and push in users localstorage array
                 {
                     usersArr = JSON.parse(localStorage.getItem("users"));
                     usersArr.push(storeObj);
                     localStorage.setItem("users",JSON.stringify(usersArr));
                 }
-                else
+                else //No users present push first user create users array in localstorage
                 {
                     usersArr.push(storeObj);
                     localStorage.setItem("users",JSON.stringify(usersArr));
@@ -200,8 +198,8 @@ const Registration = (props) => {
                     <TextField
                      value={userDetails.fname}
                       onChange={handleChange}   
-                        error={errorMsgs.fnameError}
-                        helperText={errorMsgs.fnameError}
+                        error={errorMsgs.fnameError} // if error message isn't null will active error class
+                        helperText={errorMsgs.fnameError} // Show the actual error message below the input if any
                        name="fname"
                         label="First Name"
                          required style={{width:'25vw'}}></TextField></Grid>

@@ -16,14 +16,14 @@ function App() {
 
   return (
     <div>
-      <Nav loggedIn={loggedIn} registering={registering}/>
-      <Switch>
+      <Nav loggedIn={loggedIn} registering={registering}/> {/* passed props are to set button links in nav dynamically  */}
+      <Switch> {/* Set up Routes with validations/guards */}
       {loggedIn ? 
           <Route exact path="/home" component={MainScr}/> 
           : <Route exact path="/login" render={(props) => <Loginfrm {...props} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>} />
                }
           <Route path="/registration" render={(props) => <Registration {...props} registering={registering} setRegistering={setRegistering}/>}/>
-          {loggedIn ? <Route path="/logout" render={(props) => <Logout {...props} setLoggedIn={setLoggedIn}/>}/> : null}
+          {loggedIn ? <Route path="/logout" render={(props) => <Logout {...props} setLoggedIn={setLoggedIn}/>} /> : null}
           {loggedIn ? <Route path="/personaldetails" component={PersonalDetails}/> : null}
           {loggedIn ? <Route path="/educationaldetails" component={EducationalDetails}/> : null}
           registering && <Route path="/registration-step2" render={(props) => <RegistrationPart2 {...props} registering={registering} setRegistering={setRegistering}/>}/>

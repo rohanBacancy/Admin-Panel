@@ -15,23 +15,24 @@ const RegistrationPart2 = (props) => {
         cgpaError:'',
         phoneError:'',
         startDateError:'',
-        isInputErroneous:true,//if register button disabling is required then this will be usable
     },])
 
     const handleSubmit = (e) =>
     {
         e.preventDefault();
+
+        //Calculate sum of length of every error message
         let sum=0;
         for(let msg of errorMsgs)
         {
             for(let insmsg in msg)
             {
-                if(insmsg!="isInputErroneous")
                     sum+=msg[insmsg].length;    
             }
             
         }
-        if(sum==0)
+
+        if(sum==0) //if all error meessages are null means no error in form inputs
         {
             console.log(educationDetails);
             let currUser = JSON.parse(localStorage.getItem("currUser"));
@@ -61,7 +62,8 @@ const RegistrationPart2 = (props) => {
             props.setRegistering(false); 
             localStorage.removeItem("currUserForRegisterForm");   
         }
-        else
+
+        else //Form contains errors
         {
             console.log(sum);
             alert("Any on of the Field Contains Invalid Input")
@@ -163,18 +165,17 @@ const RegistrationPart2 = (props) => {
     }
     
 
-    const addNewForm = () =>
+    const addNewForm = () => // Add new object in state array with all fields null to render an extra form
     {
         setEducationDetails([...educationDetails,{instituteName:'',cgpa:'',course:'',startDate:'2016-06-24',endDate:'2021-06-24',}])
         setErrorMsgs([...errorMsgs,{
         cgpaError:'',
         phoneError:'',
         startDateError:'',
-        isInputErroneous:true,
     }])
     }
 
-    const removeForm = (id) =>
+    const removeForm = (id) => //if form is removed added data into that form should be removed so it doesn't get added
     {
         if(educationDetails.length>1)
         {
